@@ -33,7 +33,7 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ADMINISTRATOR', 'MODERATOR')")
     public Product createProduct(@RequestParam(name = "title") String title,
