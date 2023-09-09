@@ -38,10 +38,10 @@ public class ProductController {
     @PreAuthorize("hasAnyAuthority('ADMINISTRATOR', 'MODERATOR')")
     public Product createProduct(@RequestParam(name = "title") String title,
                                  @RequestParam(name = "category") String category,
-                                 @RequestParam(name = "price") String price,
+                                 @RequestParam(name = "price") int price,
                                  @RequestParam(name = "description") String description,
                                  @RequestParam(name = "images[]") MultipartFile[] files) throws IOException {
-        return productService.saveProduct(title, category, Integer.parseInt(price), description, files);
+        return productService.saveProduct(title, category, price, description, files);
     }
 
     @DeleteMapping("/delete/{id}")
