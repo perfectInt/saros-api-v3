@@ -31,7 +31,7 @@ public class Product {
 
     private String category;
 
-    private Integer price;
+    private int price;
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,

@@ -39,7 +39,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Product saveProduct(String title, String category, Integer price, String description, MultipartFile[] files) throws IOException {
+    public Product saveProduct(String title, String category, int price, String description, MultipartFile[] files) throws IOException {
         Product product = productMapper.toEntity(title, category, price, description);
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : files) {
