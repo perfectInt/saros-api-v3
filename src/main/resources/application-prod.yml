@@ -14,4 +14,4 @@ spring:
 
 jwt:
   secret:
-    access: ewJq24Vw/33NqwiIEC5KdFD44rMa7S3ScGMPWCli/MUfb3AkS6HVE0bs9FqwUI5gr0MRGb8L5VF+KjpigLcryZJO2+MKKK0Ba5rkgbcioHs=
+    access: ${PROD_JWT_SECRET}
