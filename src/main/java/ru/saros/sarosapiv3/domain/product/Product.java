@@ -27,11 +27,11 @@ public class Product {
 
     private String title;
 
-    private String description = "Just a description";
+    private String description;
 
     private String category;
 
-    private Double price = 14490.90;
+    private Integer price;
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
