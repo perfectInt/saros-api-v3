@@ -25,10 +25,12 @@ public class ProductMapper {
         return productResponse;
     }
 
-    public Product toEntity(String title, String category) {
+    public Product toEntity(String title, String category, Integer price, String description) {
         Product product = new Product();
         product.setTitle(title);
         product.setCategory(category);
+        product.setPrice(price);
+        product.setDescription(description);
         return product;
     }
 }
