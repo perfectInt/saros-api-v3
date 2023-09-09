@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: qwerty123
+    url: jdbc:postgresql://localhost:5432/saros-db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret:
+    access: ewJq24Vw/33NqwiIEC5KdFD44rMa7S3ScGMPWCli/MUfb3AkS6HVE0bs9FqwUI5gr0MRGb8L5VF+KjpigLcryZJO2+MKKK0Ba5rkgbcioHs=
