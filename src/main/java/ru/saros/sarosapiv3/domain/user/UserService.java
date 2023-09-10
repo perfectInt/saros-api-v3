@@ -31,7 +31,7 @@ public class UserService {
     @Transactional
     public User registerUser(RegistrationRequest registrationRequest) {
         if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent())
-            throw new UserAlreadyExistsException("User with this email already exists!");
+            throw new UserAlreadyExistsException("User with " + registrationRequest.getEmail() + " email already exists!");
         if (!Objects.equals(registrationRequest.getPassword(), registrationRequest.getPasswordConfirmation()))
             throw new PasswordException("Passwords are not matching!");
         User user = userMapper.toEntity(registrationRequest);
@@ -77,7 +77,7 @@ public class UserService {
                         loginRequest.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(UserNotFoundException::new);
         return jwtService.generateToken(user);
     }
 //
