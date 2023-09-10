@@ -1,5 +1,6 @@
 package ru.saros.sarosapiv3.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,13 @@ public class AuthController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public User registerUser(@RequestBody RegistrationRequest registrationRequest) {
+    public User registerUser(@Valid @RequestBody RegistrationRequest registrationRequest) {
         return userService.registerUser(registrationRequest);
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public String login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest);
     }
 }

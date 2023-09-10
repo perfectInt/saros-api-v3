@@ -97,7 +97,6 @@ public class AuthControllerTest {
 
     @Test
     @Order(4)
-    @Disabled
     @DisplayName("Registration with incorrect email format")
     public void incorrectEmailFormatRegistrationTest() throws Exception {
         registrationRequest.setPasswordConfirmation("12345678");
