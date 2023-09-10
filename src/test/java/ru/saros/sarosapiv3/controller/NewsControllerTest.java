@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DirtiesContext
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class NewsControllerIT {
+public class NewsControllerTest {
 
     ObjectMapper mapper = new ObjectMapper();
 

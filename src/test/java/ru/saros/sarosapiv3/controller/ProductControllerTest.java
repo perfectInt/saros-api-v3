@@ -34,13 +34,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DirtiesContext
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductControllerIT {
+public class ProductControllerTest {
     ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
 
-    String title, category;
+    String title, category, description;
+    Integer price;
     MockMultipartFile[] files;
 
     Long id;
@@ -50,6 +51,8 @@ public class ProductControllerIT {
     public void init() {
         title = "Test title";
         category = "Test category";
+        description = "Test description";
+        price = 2500;
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         files = new MockMultipartFile[2];
@@ -62,11 +65,13 @@ public class ProductControllerIT {
     @WithMockUser(authorities = {"ADMINISTRATOR"})
     public void createProductTest() throws Exception {
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.multipart("/api/v3/products/create")
+                MockMvcRequestBuilders.multipart("/api/v3/products")
                         .file(files[0])
                         .file(files[1])
                         .param("title", title)
                         .param("category", category)
+                        .param("description", description)
+                        .param("price", String.valueOf(price))
         ).andExpect(status().isCreated()).andReturn();
 
         String response = mvcResult.getResponse().getContentAsString();
