@@ -53,11 +53,11 @@ public class UserService {
     }
 
     @Transactional
-    public StatusResponse deleteUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    public StatusResponse deleteUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         if (user.getRole() == Role.ADMINISTRATOR) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         userRepository.deleteById(user.getId());
-        return new StatusResponse(email + " was deleted successfully!");
+        return new StatusResponse(user.getEmail() + " was deleted successfully!");
     }
 
     public User changeUserRole(ChangeUserRoleRequest request) {

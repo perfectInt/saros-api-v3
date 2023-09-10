@@ -1,5 +1,6 @@
 package ru.saros.sarosapiv3.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,14 +37,14 @@ public class UserController {
     @PutMapping("/role")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
-    public User changeRole(@RequestBody ChangeUserRoleRequest request) {
+    public User changeRole(@Valid @RequestBody ChangeUserRoleRequest request) {
         return userService.changeUserRole(request);
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
-    public StatusResponse deleteUser(@PathVariable String email) {
-        return userService.deleteUserByEmail(email);
+    public StatusResponse deleteUser(@PathVariable Long id) {
+        return userService.deleteUserById(id);
     }
 }

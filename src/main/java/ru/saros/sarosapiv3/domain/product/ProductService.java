@@ -26,7 +26,7 @@ public class ProductService {
 
     public List<ProductResponse> getProducts(Integer page, String category) {
         if (page == null) page = 0;
-        Pageable paging = PageRequest.of(page, 9, Sort.by("title"));
+        Pageable paging = PageRequest.of(page, 20, Sort.by("dateOfCreation"));
         Page<Product> products;
         if (category == null) products = productRepository.findAll(paging);
         else products = productRepository.findAllByCategory(paging, category);

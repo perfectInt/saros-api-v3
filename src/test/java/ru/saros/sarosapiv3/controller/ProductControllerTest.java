@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.saros.sarosapiv3.api.exception.ProductNotFoundException;
 import ru.saros.sarosapiv3.domain.product.Product;
 import ru.saros.sarosapiv3.domain.product.ProductResponse;
 import ru.saros.sarosapiv3.domain.product.ProductService;
@@ -63,7 +64,21 @@ public class ProductControllerTest {
     @Test
     @Order(1)
     @WithMockUser(authorities = {"ADMINISTRATOR"})
+    @DisplayName("Checking if products are getting created correctly")
     public void createProductTest() throws Exception {
+
+        for (int i = 0; i < 20; i++) {
+            mockMvc.perform(
+                    MockMvcRequestBuilders.multipart("/api/v3/products")
+                            .file(files[0])
+                            .file(files[1])
+                            .param("title", title)
+                            .param("category", category)
+                            .param("description", description)
+                            .param("price", String.valueOf(price))
+            );
+        }
+
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/api/v3/products")
                         .file(files[0])
@@ -88,6 +103,7 @@ public class ProductControllerTest {
     @Test
     @Order(2)
     @WithAnonymousUser
+    @DisplayName("Checking if users can access products list")
     public void getNewProductTest() throws Exception {
         RequestBuilder requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products/" + id)
                 .accept(MediaType.APPLICATION_JSON_VALUE);
@@ -106,32 +122,34 @@ public class ProductControllerTest {
     @Test
     @Order(3)
     @WithAnonymousUser
+    @DisplayName("Checking if users can access products list by pages")
     public void getAllProductsByPageTest() throws Exception {
         RequestBuilder requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products")
                 .accept(MediaType.APPLICATION_JSON_VALUE);
 
         mockMvc.perform(requestBuilderGet)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("length()").value(1));
+                .andExpect(jsonPath("length()").value(20));
 
         requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products?page=1")
                 .accept(MediaType.APPLICATION_JSON_VALUE);
 
         mockMvc.perform(requestBuilderGet)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("length()").value(0));
+                .andExpect(jsonPath("length()").value(1));
     }
 
     @Test
     @Order(4)
     @WithAnonymousUser
+    @DisplayName("Checking if users can access products list by categories")
     public void getAllProductsByPageAndCategoryTest() throws Exception {
         RequestBuilder requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products?category=" + category)
                 .accept(MediaType.APPLICATION_JSON_VALUE);
 
         mockMvc.perform(requestBuilderGet)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("length()").value(1));
+                .andExpect(jsonPath("length()").value(20));
 
         requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products?category=another+Category")
                 .accept(MediaType.APPLICATION_JSON_VALUE);
@@ -144,6 +162,7 @@ public class ProductControllerTest {
     @Test
     @Order(5)
     @WithAnonymousUser
+    @DisplayName("Checking that user without grants cannot get access to admin's endpoints")
     public void checkAccessTest() throws Exception {
         RequestBuilder requestBuilderDelete = MockMvcRequestBuilders
                 .delete("/api/v1/products/delete/" + id);
@@ -154,10 +173,20 @@ public class ProductControllerTest {
     @Test
     @Order(6)
     @WithMockUser(authorities = {"ADMINISTRATOR"})
+    @DisplayName("Checking if product is getting deleted")
     public void deleteProductTest() throws Exception {
         RequestBuilder requestBuilderDelete = MockMvcRequestBuilders
                 .delete("/api/v3/products/delete/" + id);
 
         mockMvc.perform(requestBuilderDelete).andExpect(status().isNoContent());
+
+        RequestBuilder requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products/" + id)
+                .accept(MediaType.APPLICATION_JSON_VALUE);
+
+        MvcResult mvcResult = mockMvc.perform(requestBuilderGet).andReturn();
+        ProductNotFoundException exception = (ProductNotFoundException) mvcResult.getResolvedException();
+
+        assertNotNull(exception);
+        mockMvc.perform(requestBuilderGet).andExpect(status().isNotFound());
     }
 }
