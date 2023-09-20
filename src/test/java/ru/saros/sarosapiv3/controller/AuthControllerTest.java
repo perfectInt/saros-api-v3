@@ -41,13 +41,13 @@ public class AuthControllerTest {
     @BeforeAll
     public void init() {
         registrationRequest = new RegistrationRequest(
-                "rs.xdms@mail.ru",
+                "rs.xdmss@mail.ru",
                 "Jotaro Kujo",
                 "12345678",
                 "12345678"
         );
         loginRequest = new LoginRequest(
-                "rs.xdms@mail.ru",
+                "rs.xdmss@mail.ru",
                 "12345678"
         );
     }

@@ -23,3 +23,4 @@ public class RegistrationRequest {
 
     private String passwordConfirmation;
 }
+
