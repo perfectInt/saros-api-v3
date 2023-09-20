@@ -1,10 +1,7 @@
 package ru.saros.sarosapiv3.domain.product;
 
 import org.springframework.stereotype.Component;
-import ru.saros.sarosapiv3.domain.image.Image;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class ProductMapper {
@@ -17,11 +14,7 @@ public class ProductMapper {
         productResponse.setDescription(product.getDescription());
         productResponse.setPreviewImageId(product.getPreviewImageId());
         productResponse.setPrice(product.getPrice());
-        List<Long> ids = new ArrayList<>();
-        for (Image image : product.getImages()) {
-            ids.add(image.getId());
-        }
-        productResponse.setImagesIds(ids);
+        productResponse.setImagesIds(product.getImages());
         return productResponse;
     }
 

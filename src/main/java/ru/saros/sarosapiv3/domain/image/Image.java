@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import jakarta.persistence.*;
+import ru.saros.sarosapiv3.domain.post.Post;
 import ru.saros.sarosapiv3.domain.product.Product;
 
 import java.sql.Types;
@@ -28,13 +29,7 @@ public class Image {
 
     private String contentType;
 
-    private boolean isPreviewImage;
-
     @Lob
     @JdbcTypeCode(Types.LONGVARBINARY)
     private byte[] bytes;
-
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Product product;
 }
