@@ -38,7 +38,8 @@ public class SecurityConfig {
                                 HttpMethod.GET,
                                 "/api/v3/products/**",
                                 "/api/v3/news/**",
-                                "/api/v3/images/**"
+                                "/api/v3/images/**",
+                                "/api/v3/posts/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
