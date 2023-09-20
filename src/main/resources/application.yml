@@ -11,6 +11,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  liquibase:
+    change-log: classpath:db/dev/changelog.xml
+    enabled: true
 
 jwt:
   secret:
