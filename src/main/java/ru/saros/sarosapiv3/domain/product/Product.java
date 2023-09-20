@@ -14,6 +14,7 @@ import ru.saros.sarosapiv3.domain.image.Image;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -27,16 +28,16 @@ public class Product {
 
     private String title;
 
+    @Column(length = 1024)
     private String description;
 
     private String category;
 
     private int price;
 
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-            mappedBy = "product")
-    private List<Image> images = new ArrayList<>();
+    @ElementCollection
+    @Column(name = "image_id")
+    private List<Long> images;
 
     private Long previewImageId;
 

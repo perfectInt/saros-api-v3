@@ -115,7 +115,7 @@ public class ProductControllerTest {
 
         assertNotNull(response);
         assertEquals("Test title", productView.getTitle());
-        assertEquals(product.getImages().get(0).getId(), productView.getImagesIds().get(0));
+        assertEquals(product.getImages().get(0), productView.getImagesIds().get(0));
         System.out.println(productView);
     }
 

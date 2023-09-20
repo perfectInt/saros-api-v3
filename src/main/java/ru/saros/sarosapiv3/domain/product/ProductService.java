@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.saros.sarosapiv3.api.exception.ProductNotFoundException;
 import ru.saros.sarosapiv3.domain.image.Image;
 import ru.saros.sarosapiv3.domain.image.ImageMapper;
+import ru.saros.sarosapiv3.domain.image.ImageRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ImageMapper imageMapper;
     private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
 
     public List<ProductResponse> getProducts(Integer page, String category) {
         if (page == null) page = 0;
@@ -41,17 +43,14 @@ public class ProductService {
     @Transactional
     public Product saveProduct(String title, String category, int price, String description, MultipartFile[] files) throws IOException {
         Product product = productMapper.toEntity(title, category, price, description);
-        List<Image> images = new ArrayList<>();
+        List<Long> images = new ArrayList<>();
         for (MultipartFile file : files) {
             Image image = imageMapper.toEntity(file);
-            image.setProduct(product);
-            images.add(image);
+            images.add(imageRepository.save(image).getId());
         }
-        images.get(0).setPreviewImage(true);
+        product.setPreviewImageId(images.get(0));
         product.setImages(images);
-        Product updateProduct = productRepository.save(product);
-        updateProduct.setPreviewImageId(images.get(0).getId());
-        return productRepository.save(updateProduct);
+        return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
