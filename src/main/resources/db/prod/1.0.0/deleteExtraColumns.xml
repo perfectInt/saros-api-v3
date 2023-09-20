@@ -7,8 +7,5 @@
     <changeSet id="2" author="Perfect Vint">
         <dropColumn tableName="images" columnName="is_preview_image"/>
         <dropColumn tableName="images" columnName="product_id"/>
-        <dropColumn tableName="images" columnName="post_id"/>
-        <dropColumn tableName="post" columnName="image_id"/>
-        <dropTable tableName="product_image_ids"/>
     </changeSet>
 </databaseChangeLog>
