@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  postgres:
+    container_name: postgres_saros_db
+    image: postgres:14-alpine3.14
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: saros-db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: qwerty123
+    ports:
+      - "5432:5432"
+    volumes:
+      - saros-db:/var/opt/postgres
+    networks:
+      - saros-network
+
+  saros-api:
+    container_name: saros-api
+    image: perfectvint/saros-api:latest
+    restart: unless-stopped
+    environment:
+      SAROS_DB_USERNAME: root
+      SAROS_DB_PASSWORD: test
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/saros-db
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - saros-network
+
+volumes:
+  saros-db:
+
+networks:
+  saros-network:
