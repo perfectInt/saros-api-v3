@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,6 +46,9 @@ public class ProductControllerTest {
     Integer price;
     MockMultipartFile[] files;
 
+    @Value("${pagination:12}")
+    private Integer pagination;
+
     Long id;
     Product product;
 
@@ -67,7 +71,7 @@ public class ProductControllerTest {
     @DisplayName("Checking if products are getting created correctly")
     public void createProductTest() throws Exception {
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < pagination; i++) {
             mockMvc.perform(
                     MockMvcRequestBuilders.multipart("/api/v3/products")
                             .file(files[0])
@@ -129,7 +133,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(requestBuilderGet)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("length()").value(20));
+                .andExpect(jsonPath("length()").value(pagination));
 
         requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products?page=1")
                 .accept(MediaType.APPLICATION_JSON_VALUE);
@@ -149,7 +153,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(requestBuilderGet)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("length()").value(20));
+                .andExpect(jsonPath("length()").value(pagination));
 
         requestBuilderGet = MockMvcRequestBuilders.get("/api/v3/products?category=another+Category")
                 .accept(MediaType.APPLICATION_JSON_VALUE);

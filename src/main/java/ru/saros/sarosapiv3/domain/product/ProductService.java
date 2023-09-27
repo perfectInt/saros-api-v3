@@ -2,6 +2,7 @@ package ru.saros.sarosapiv3.domain.product;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +26,12 @@ public class ProductService {
     private final ImageMapper imageMapper;
     private final ProductRepository productRepository;
     private final ImageRepository imageRepository;
+    @Value("${pagination:12}")
+    private Integer pagination;
 
     public List<ProductResponse> getProducts(Integer page, String category) {
         if (page == null) page = 0;
-        Pageable paging = PageRequest.of(page, 20, Sort.by("dateOfCreation"));
+        Pageable paging = PageRequest.of(page, pagination, Sort.by("dateOfCreation"));
         Page<Product> products;
         if (category == null) products = productRepository.findAll(paging);
         else products = productRepository.findAllByCategory(paging, category);
