@@ -65,5 +65,9 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Cannot find this product"));
         return productMapper.toView(product);
     }
+
+    public List<Product> getLastProducts() {
+        return productRepository.findLastProducts();
+    }
 }
 
