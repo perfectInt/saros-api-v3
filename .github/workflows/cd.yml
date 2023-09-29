@@ -22,12 +22,19 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Push docker image
+      - name: Log in to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Package app
+        run: /opt/maven/bin/mvn clean package -DskipTests
+
+      - name: Build Docker image
+        run: docker build -t saros-api:latest .
+
+      - name: Push Docker image
         run: |
-          mvn compile jib:build \
-            -Djib.to.image=${{ secrets.DOCKER_USERNAME }}/saros-api:latest \
-            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
-            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+          docker tag saros-api:latest ${{ secrets.DOCKER_USERNAME }}/saros-api
+          docker push ${{secrets.DOCKER_USERNAME}}/saros-api:latest
 
       - name: Run the application
         run: docker-compose up -d
