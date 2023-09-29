@@ -1,5 +1,7 @@
 package ru.saros.sarosapiv3.api.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v3/users")
 @CrossOrigin
+@Tag(name = "User controller", description = "Endpoints for user's manipulations")
 public class UserController {
 
     private final UserService userService;
@@ -23,6 +26,7 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ADMINISTRATOR', 'MODERATOR')")
+    @Operation(tags = "User controller", description = "Get a list of users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -30,6 +34,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ADMINISTRATOR', 'MODERATOR')")
+    @Operation(tags = "User controller", description = "Get a concrete user by its id")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
@@ -37,6 +42,7 @@ public class UserController {
     @PutMapping("/role")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @Operation(tags = "User controller", description = "Change someone's user role")
     public User changeRole(@Valid @RequestBody ChangeUserRoleRequest request) {
         return userService.changeUserRole(request);
     }
@@ -44,6 +50,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @Operation(tags = "User controller", description = "Delete user by id")
     public StatusResponse deleteUser(@PathVariable Long id) {
         return userService.deleteUserById(id);
     }

@@ -1,5 +1,7 @@
 package ru.saros.sarosapiv3.api.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,14 @@ import java.io.ByteArrayInputStream;
 @RequiredArgsConstructor
 @RequestMapping("/api/v3/images")
 @CrossOrigin
+@Tag(name = "Image controller", description = "Endpoints for images")
 public class ImageController {
 
     private final ImageService imageService;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(tags = "Image controller", description = "Get image by its id")
     public ResponseEntity<?> getImageById(@PathVariable Long id) {
         Image image = imageService.getImageById(id);
         return ResponseEntity.ok()
