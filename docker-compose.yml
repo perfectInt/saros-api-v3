@@ -1,18 +1,18 @@
 version: '3.3'
 
 services:
-  postgres:
-    container_name: postgres_saros_db
+  saros-db:
+    container_name: ${PROD_DB_HOST}
     image: postgres:14-alpine3.14
     restart: unless-stopped
     environment:
-      POSTGRES_DB: saros-db
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: qwerty123
+      POSTGRES_DB: ${PROD_DB_NAME}
+      POSTGRES_USER: ${PROD_DB_USERNAME}
+      POSTGRES_PASSWORD: ${PROD_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - ${PROD_DB_PORT}:${PROD_DB_PORT}
     volumes:
-      - saros-db:/var/opt/postgres
+      - ${PROD_DB_NAME}:/var/opt/db
     networks:
       - saros-network
 
@@ -21,11 +21,13 @@ services:
     image: perfectvint/saros-api:latest
     restart: unless-stopped
     environment:
-      SAROS_DB_USERNAME: root
-      SAROS_DB_PASSWORD: test
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/saros-db
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_USERNAME: ${PROD_DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${PROD_DB_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}
+      JWT_SECRET_ACCESS: ${PROD_JWT_SECRET}
     depends_on:
-      - postgres
+      - saros-db
     ports:
       - "8080:8080"
     networks:
@@ -33,6 +35,7 @@ services:
 
 volumes:
   saros-db:
+    driver: local
 
 networks:
   saros-network:
