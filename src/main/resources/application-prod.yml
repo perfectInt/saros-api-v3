@@ -13,7 +13,7 @@ spring:
     show-sql: false
   liquibase:
     change-log: classpath:db/prod/changelog.xml
-    enabled: true
+    enabled: false
 
 jwt:
   secret:

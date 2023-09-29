@@ -1,0 +1,33 @@
+name: SAROS-API DEPLOY
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: self-hosted
+    env:
+      app_name: saros-api
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Push docker image
+        run: |
+          mvn compile jib:build \
+            -Djib.to.image=${{ secrets.DOCKER_USERNAME }}/saros-api:latest \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Run the application
+        run: docker-compose up -d
