@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jdk-jammy as builder
 WORKDIR /opt/app
-COPY .mvn pom.xml ./
+COPY pom.xml ./
 COPY ./src ./src
 RUN mvn clean install
 
