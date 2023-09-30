@@ -31,6 +31,9 @@ jobs:
       - name: Package app
         run: /opt/maven/bin/mvn clean package -DskipTests
 
+      - name: ls
+        run: ls -la
+
       - name: Build Docker image
         run: docker build -t saros-api:latest .
 
