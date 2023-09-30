@@ -2,7 +2,8 @@ FROM eclipse-temurin:17-jdk-jammy as builder
 WORKDIR /opt/app
 COPY pom.xml ./
 COPY ./src ./src
-RUN /opt/maven/bin/mvn clean install
+RUN chmod +x mvnw.sh
+RUN ./mvnw.sh -B package
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /opt/app
