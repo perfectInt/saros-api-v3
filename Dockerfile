@@ -1,7 +1,7 @@
 FROM eclipse-temurin:17-jdk-jammy as builder
 COPY . .
 RUN chmod +x mvnw.sh
-RUN ./mvnw.sh -B package
+RUN ./mvnw -B package
 
 FROM eclipse-temurin:17-jre-jammy
 EXPOSE 8080
