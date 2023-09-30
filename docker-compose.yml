@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: ${PROD_DB_USERNAME}
       POSTGRES_PASSWORD: ${PROD_DB_PASSWORD}
     ports:
-      - ${PROD_DB_PORT}:${PROD_DB_PORT}
+      - ${PROD_DB_PORT}:5432
     volumes:
       - ${PROD_DB_NAME}:/var/opt/db
     networks:
