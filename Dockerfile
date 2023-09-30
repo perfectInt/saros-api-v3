@@ -10,4 +10,4 @@ COPY ./target/*.jar /app
 EXPOSE 8080
 
 # Starting the application
-CMD ["java", "-jar", "*.jar"]
+CMD ["java", "-jar", "saros-api-v3-0.0.1-SNAPSHOT.jar"]
