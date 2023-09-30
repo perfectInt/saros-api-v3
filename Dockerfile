@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jdk-jammy as builder
 COPY . .
-RUN chmod +x mvnw.sh
+RUN chmod +x mvnw
 RUN ./mvnw -B package
 
 FROM eclipse-temurin:17-jre-jammy
