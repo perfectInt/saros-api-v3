@@ -1,9 +1,13 @@
-FROM eclipse-temurin:17-jdk-jammy as builder
-COPY . .
-RUN chmod +x mvnw
-RUN ./mvnw -B package
+FROM eclipse-temurin:17-jdk-jammy
 
-FROM eclipse-temurin:17-jre-jammy
+# Setting up work directory
+WORKDIR /app
+
+# Copy the jar file into our app
+COPY ./target/*.jar /app
+
+# Exposing port 8080
 EXPOSE 8080
-COPY --from=builder target/*.jar *.jar
-ENTRYPOINT ["java", "-jar", "*.jar" ]
+
+# Starting the application
+CMD ["java", "-jar", "*.jar"]
