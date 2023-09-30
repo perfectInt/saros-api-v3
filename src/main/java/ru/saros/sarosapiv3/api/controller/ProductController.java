@@ -46,8 +46,9 @@ public class ProductController {
                                  @RequestParam(name = "category") String category,
                                  @RequestParam(name = "price") int price,
                                  @RequestParam(name = "description") String description,
-                                 @RequestParam(name = "images[]") MultipartFile[] files) throws IOException {
-        return productService.saveProduct(title, category, price, description, files);
+                                 @RequestParam(name = "images[]") MultipartFile[] files,
+                                 @RequestParam(name = "link", required = false) String link) throws IOException {
+        return productService.saveProduct(title, category, price, description, files, link);
     }
 
     @DeleteMapping("/delete/{id}")

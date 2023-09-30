@@ -45,6 +45,8 @@ public class Product {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfCreation;
 
+    private String link;
+
     @PrePersist
     private void init() {
         dateOfCreation = LocalDateTime.now();

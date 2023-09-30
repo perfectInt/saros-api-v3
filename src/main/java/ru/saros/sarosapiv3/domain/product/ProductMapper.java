@@ -18,12 +18,13 @@ public class ProductMapper {
         return productResponse;
     }
 
-    public Product toEntity(String title, String category, int price, String description) {
+    public Product toEntity(String title, String category, int price, String description, String link) {
         Product product = new Product();
         product.setTitle(title);
         product.setCategory(category);
         product.setPrice(price);
         product.setDescription(description);
+        product.setLink(link);
         return product;
     }
 }
